@@ -1,57 +1,86 @@
 <?php
-// api/src/Entity/Book.php
+
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** A book. */
-#[ApiResource]
 #[ORM\Entity]
+#[ApiResource(
+    normalizationContext: ['groups' => ['book:read']],
+    // denormalizationContext: ["groups" => ["book_write"]]
+
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: ['title' => 'ipartial', 'author' => 'ipartial', 'genre' => 'ipartial']
+)]
 class Book
 {
-    /** The ID of this book. */
-    #[ORM\Id, ORM\Column, ORM\GeneratedValue]
-    private ?int $id = null;
 
-    /** The ISBN of this book (or null if doesn't have one). */
-    #[ORM\Column]
+
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    #[Groups(["book:read"])]
+    public ?int $id = null;
+
+
+
+
+    #[ORM\Column(type: "string")]
     #[Assert\NotBlank]
-    public ?string $isbn = null;
+    #[Groups(["book:read",'author:read'])]
+    public string  $title;
 
-    /** The title of this book. */
-    #[ORM\Column]
+
+
+
+    #[ORM\Column(type: "text")]
     #[Assert\NotBlank]
-    public string $title = '';
+    #[Groups(["book:read"])]
+    public  string $description;
 
-    /** The description of this book. */
-    #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
-    public string $description = '';
 
-    /** The author of this book. */
-    #[ORM\Column]
-    #[Assert\NotBlank]
-    public string $author = '';
 
-    /** The publication date of this book. */
+
     #[ORM\Column]
     #[Assert\NotNull]
+    #[Groups(["book:read"])]
     public ?\DateTimeImmutable $publicationDate = null;
 
-    /** @var Review[] Available reviews for this book. */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'book', cascade: ['persist', 'remove'])]
+
+
+
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank]
+    #[Groups(["book:read"])]
+    public string $genre;
+
+
+
+    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: "books")]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["book:read"])]
+    public ?Author $author = null;
+
+
+
+
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: "book")]
+    // #[Groups(["book:read"])]
     public iterable $reviews;
+
 
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 }

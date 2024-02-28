@@ -1,47 +1,46 @@
 <?php
-// api/src/Entity/Review.php
+
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** A review of a book. */
-#[ApiResource]
 #[ORM\Entity]
+#[ApiResource()]
 class Review
 {
-    /** The ID of this review. */
-    #[ORM\Id, ORM\Column, ORM\GeneratedValue]
-    private ?int $id = null;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
 
-    /** The rating of this review (between 0 and 5). */
-    #[ORM\Column(type: 'smallint')]
-    #[Assert\Range(min: 0, max: 5)]
-    public int $rating = 0;
+    public $id;
 
-    /** The body of the review. */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: "string")]
     #[Assert\NotBlank]
-    public string $body = '';
+    public $fullName;
 
-    /** The author of the review. */
-    #[ORM\Column]
+    #[ORM\Column(type: "string")]
+    #[Assert\Email]
+    public $email;
+
+    #[ORM\Column(type: "text")]
     #[Assert\NotBlank]
-    public string $author = '';
+    public $comment;
 
-    /** The date of publication of this review.*/
     #[ORM\Column]
-    #[Assert\NotNull]
-    public ?\DateTimeImmutable $publicationDate = null;
+    #[ApiProperty(writable: false)]
+    public ?\DateTimeImmutable $creationDate = null;
 
-    /** The book this review is about. */
-    #[ORM\ManyToOne(inversedBy: 'reviews')]
-    #[Assert\NotNull]
+    #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "reviews")]
+    #[JoinColumn(nullable: false)]
     public ?Book $book = null;
 
-    public function getId(): ?int
+    #[ORM\PrePersist]
+    public function prePersist()
     {
-        return $this->id;
+        $this->creationDate = new \DateTimeImmutable();
     }
 }
