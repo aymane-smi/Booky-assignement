@@ -32,7 +32,6 @@ class Author
 
     #[ORM\Column(type: "string")]
     #[Assert\NotBlank]
-    #[Groups(["book:read", 'author:read'])]
     public string $firstName;
 
 

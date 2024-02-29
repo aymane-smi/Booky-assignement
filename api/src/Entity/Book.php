@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ApiResource(
     normalizationContext: ['groups' => ['book:read']],
-    // denormalizationContext: ["groups" => ["book_write"]]
+    denormalizationContext: ["groups" => ["book_write"]]
 
 )]
 #[ApiFilter(
