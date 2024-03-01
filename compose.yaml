@@ -1,4 +1,12 @@
 services:
+  react:
+    depends_on:
+      - php
+    build:
+      context: ./booky
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
   php:
     image: ${IMAGES_PREFIX:-}app-php
     depends_on:
@@ -54,6 +62,10 @@ services:
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
+
+networks:
+  book:
+    driver: bridge
 
 volumes:
   caddy_data:

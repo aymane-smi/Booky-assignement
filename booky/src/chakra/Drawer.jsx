@@ -28,12 +28,12 @@ export const DrawerCostume = ()=>{
                 </span>
                 <span className="font-bold text-[22px]">show books</span>
             </Link>
-            <Link to="/book/id" className="flex justify-start items-center gap-3">
+            {/* <Link to="/book/id" className="flex justify-start items-center gap-3">
                 <span>
                     <FaCircle size={10} color="black"/>
                 </span>
                 <span className="font-bold text-[22px]">show book detail</span>
-            </Link>
+            </Link> */}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
