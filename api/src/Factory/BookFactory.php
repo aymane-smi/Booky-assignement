@@ -48,10 +48,10 @@ final class BookFactory extends ModelFactory
     {
         return [
             'author' => AuthorFactory::new(),
-            'description' => self::faker()->text(),
-            'genre' => self::faker()->text(),
+            'description' => self::faker()->text(35),
+            'genre' => self::faker()->text(10),
             'publicationDate' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'title' => self::faker()->text(),
+            'title' => self::faker()->text(20),
         ];
     }
 
