@@ -13,7 +13,6 @@ services:
       - database
     restart: unless-stopped
     environment:
-      PWA_UPSTREAM: pwa:3000
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
@@ -40,14 +39,11 @@ services:
         published: ${HTTP3_PORT:-443}
         protocol: udp
 
-  pwa:
-    image: ${IMAGES_PREFIX:-}app-pwa
-    environment:
-      NEXT_PUBLIC_ENTRYPOINT: http://php
-
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-15}-alpine
+    ports:
+     - "5444:5432"
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-app}
       # You should definitely change the password in production
