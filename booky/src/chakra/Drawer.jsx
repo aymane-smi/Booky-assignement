@@ -18,7 +18,7 @@ export const DrawerCostume = ()=>{
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
+          <DrawerCloseButton data-cy="close-drawer"/>
           <DrawerHeader>Menu</DrawerHeader>
 
           <DrawerBody className="flex flex-col gap-5">
@@ -26,7 +26,7 @@ export const DrawerCostume = ()=>{
                 <span>
                     <FaCircle size={10} color="black"/>
                 </span>
-                <span className="font-bold text-[22px]">show books</span>
+                <span className="font-bold text-[22px]" data-cy="drawer-item">show books</span>
             </Link>
             {/* <Link to="/book/id" className="flex justify-start items-center gap-3">
                 <span>

@@ -16,7 +16,7 @@ const BookDetails = ()=>{
         <div className="shadow-lg flex flex-col justify-center items-start border-2 rounded-md p-4">
             <p className="flex justify-center items-center gap-3">
                 <span className="font-bold text-[22px]">Book id:</span>
-                <span className="text-[18px]">{book.id}</span>
+                <span className="text-[18px]" data-cy="id">{book.id}</span>
             </p>
             <p className="flex justify-center items-center gap-3">
                 <span className="font-bold text-[22px]">Book title:</span>
